@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-10
+
 ### Added
 
 - MétéoMédia (Pelmorex) weather provider: current conditions, 24 hours and
@@ -26,4 +28,5 @@ the notes of the version's GitHub Release.
 - Optional synthetic feels-like alerts (off by default).
 - "Test the weather sources" button in the Configuration screen.
 
-[Unreleased]: https://github.com/LM1LC3N7/gladys-meteomedia/commits/main
+[Unreleased]: https://github.com/LM1LC3N7/gladys-meteomedia/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/LM1LC3N7/gladys-meteomedia/releases/tag/v0.1.1
