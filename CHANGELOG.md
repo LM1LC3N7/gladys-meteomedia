@@ -10,6 +10,12 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Changed
+
+- The integration says it is an unofficial MétéoMédia connector for personal
+  use, not affiliated with Pelmorex: catalog description, configuration
+  intro (with a link to the MétéoMédia terms of use), cover and docs.
+
 ## [0.1.1] - 2026-10-10
 
 ### Added

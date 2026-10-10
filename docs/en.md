@@ -1,5 +1,14 @@
 # MétéoMédia for Gladys
 
+> **Unofficial connector, for personal use.** This project is neither
+> affiliated with nor endorsed by Pelmorex, owner of MétéoMédia and The
+> Weather Network. It uses the data of their website, whose
+> [terms of use](https://www.theweathernetwork.com/terms-of-use) restrict
+> automated access to personal, non-commercial use: you are responsible for
+> complying with them. "MétéoMédia" is a registered trademark of Pelmorex
+> Weather Networks (Television) Inc., named only to identify the service the
+> connector talks to.
+
 This integration makes **MétéoMédia** (The Weather Network) the weather
 provider of Gladys: the dashboard weather widget and the assistant ("what
 will the weather be tomorrow?") use its forecasts. It is built for Québec

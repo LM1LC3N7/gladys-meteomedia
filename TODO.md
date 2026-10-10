@@ -4,11 +4,14 @@
 
 - [ ] **Repository name and licence** — `gladys-meteomedia`, Apache-2.0 (the
       template's) for now.
-- [ ] **Public store publication** — subject to the Pelmorex terms of use:
-      the API is undocumented and reserved for their own apps a priori. Do
-      not add the `gladys-assistant-integration` topic before checking.
-      The name "MétéoMédia" is a Pelmorex trademark: a neutral name may be
-      required.
+- [x] **Name and store publication** (decided 2026-10-10) — personal use
+      only, the name "MétéoMédia" is kept with "unofficial connector,
+      personal use" in the catalog description, the configuration intro, the
+      cover and the docs. The Pelmorex terms of use forbid robots, scraping,
+      caching and software built on their content without written consent:
+      **do not add the `gladys-assistant-integration` topic** (it publishes
+      to the public store) unless Pelmorex agrees, or ECCC becomes the
+      primary source.
 - [x] **ECCC alert endpoint** — `api.weather.gc.ca/collections/weather-alerts`
       (verified 2026-10-10: polygons, `risk_colour_en`, `alert_type`,
       `status_en`).

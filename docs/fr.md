@@ -1,5 +1,14 @@
 # MétéoMédia pour Gladys
 
+> **Connecteur non officiel, pour un usage personnel.** Ce projet n'est ni
+> affilié à Pelmorex, propriétaire de MétéoMédia, ni approuvé par elle. Il
+> utilise les données de son site, dont les
+> [conditions d'utilisation](https://www.meteomedia.com/fr/infos/conditions-dutilisation)
+> réservent l'accès automatisé à un usage personnel et non commercial : vous
+> êtes responsable de les respecter. « MétéoMédia » est une marque déposée de
+> Pelmorex Weather Networks (Television) Inc., citée uniquement pour désigner
+> le service auquel le connecteur se relie.
+
 Cette intégration fait de **MétéoMédia** le fournisseur météo de Gladys :
 le widget météo du tableau de bord et l'assistant (« quel temps fera-t-il
 demain ? ») utilisent ses prévisions. Elle est pensée pour le Québec et le

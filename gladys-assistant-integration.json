@@ -3,8 +3,8 @@
   "type": "weather",
   "name": "MétéoMédia",
   "description": {
-    "en": "Canadian weather by MétéoMédia, with humidex, wind chill and Environment Canada alerts.",
-    "fr": "Météo canadienne de MétéoMédia : humidex, refroidissement éolien et alertes d’Environnement Canada."
+    "en": "Unofficial MétéoMédia connector, personal use: humidex, wind chill, Environment Canada alerts.",
+    "fr": "Connecteur MétéoMédia non officiel, usage personnel : humidex, refroidissement, alertes ECCC."
   },
   "version": "0.1.1",
   "docker_image": "ghcr.io/lm1lc3n7/gladys-meteomedia:0.1.1",
@@ -18,12 +18,12 @@
       "key": "intro",
       "type": "section",
       "label": {
-        "en": "MétéoMédia weather",
-        "fr": "Météo MétéoMédia"
+        "en": "MétéoMédia weather (unofficial)",
+        "fr": "Météo MétéoMédia (non officiel)"
       },
       "description": {
-        "en": "Forecasts come from MétéoMédia (The Weather Network) for the location of your house in Gladys: nothing to enter. Environment and Climate Change Canada adds the official alerts, the UV index, the precipitation radar and a fallback when MétéoMédia does not answer.",
-        "fr": "Les prévisions viennent de MétéoMédia pour la position de votre maison dans Gladys : rien à saisir. Environnement et Changement climatique Canada ajoute les alertes officielles, l’indice UV, le radar de précipitations et une source de repli quand MétéoMédia ne répond pas."
+        "en": "Unofficial connector, for personal use only: it is neither affiliated with nor endorsed by Pelmorex, owner of MétéoMédia and The Weather Network, and uses the data of their website, whose terms of use apply to you. Forecasts come from MétéoMédia for the location of your house in Gladys: nothing to enter. Environment and Climate Change Canada adds the official alerts, the UV index, the precipitation radar and a fallback when MétéoMédia does not answer.",
+        "fr": "Connecteur non officiel, pour un usage personnel uniquement : il n’est ni affilié à Pelmorex, propriétaire de MétéoMédia, ni approuvé par elle, et utilise les données de son site, dont les conditions d’utilisation s’appliquent à vous. Les prévisions viennent de MétéoMédia pour la position de votre maison dans Gladys : rien à saisir. Environnement et Changement climatique Canada ajoute les alertes officielles, l’indice UV, le radar de précipitations et une source de repli quand MétéoMédia ne répond pas."
       },
       "links": [
         {
@@ -31,6 +31,13 @@
           "label": {
             "en": "MétéoMédia",
             "fr": "MétéoMédia"
+          }
+        },
+        {
+          "url": "https://www.meteomedia.com/fr/infos/conditions-dutilisation",
+          "label": {
+            "en": "MétéoMédia terms of use",
+            "fr": "Conditions d’utilisation de MétéoMédia"
           }
         },
         {

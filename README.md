@@ -1,5 +1,14 @@
 # MétéoMédia for Gladys Assistant
 
+> **Unofficial connector, for personal use.** This project is neither
+> affiliated with nor endorsed by Pelmorex, owner of MétéoMédia and The
+> Weather Network. It reads the data of their website, whose
+> [terms of use](https://www.theweathernetwork.com/terms-of-use) restrict
+> automated access to personal, non-commercial use: each user is
+> responsible for complying with them. "MétéoMédia" is a registered
+> trademark of Pelmorex Weather Networks (Television) Inc., used here only to
+> name the service the connector talks to.
+
 A **weather provider** external integration for
 [Gladys Assistant](https://gladysassistant.com), fed by **MétéoMédia / The
 Weather Network** (Pelmorex), with **Environment and Climate Change Canada**

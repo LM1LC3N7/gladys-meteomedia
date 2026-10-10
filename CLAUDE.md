@@ -58,6 +58,13 @@ happen only in `src/pivot.js` (and in the widget / scene texts).
 
 ## Rules
 
+- **Unofficial, personal use.** Pelmorex's terms of use forbid automated
+  access without written consent: the project is not published in the
+  Gladys store (no `gladys-assistant-integration` topic), and every
+  user-facing surface (manifest description and intro, cover, README, docs)
+  says "unofficial connector, personal use". Never use MétéoMédia logos or
+  icons, and keep the "not affiliated with Pelmorex" notice.
+
 - **Keys are forever**: manifest `config_schema`, `actions`, widget,
   scene-trigger and level keys (`cold_high`…) are stored in user scenes and
   dashboards. Never rename them.
