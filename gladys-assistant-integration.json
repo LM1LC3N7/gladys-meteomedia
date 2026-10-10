@@ -1,0 +1,370 @@
+{
+  "manifest_version": 1,
+  "type": "weather",
+  "name": "MétéoMédia",
+  "description": {
+    "en": "Canadian weather by MétéoMédia, with humidex, wind chill and Environment Canada alerts.",
+    "fr": "Météo canadienne de MétéoMédia : humidex, refroidissement éolien et alertes d’Environnement Canada."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/lm1lc3n7/gladys-meteomedia:0.1.0",
+  "gladys_version": ">=5.1.0",
+  "cover_image": "https://raw.githubusercontent.com/LM1LC3N7/gladys-meteomedia/main/cover.png",
+  "categories": ["environment"],
+  "transports": ["cloud"],
+  "location": true,
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "MétéoMédia weather",
+        "fr": "Météo MétéoMédia"
+      },
+      "description": {
+        "en": "Forecasts come from MétéoMédia (The Weather Network) for the location of your house in Gladys: nothing to enter. Environment and Climate Change Canada adds the official alerts, the UV index, the precipitation radar and a fallback when MétéoMédia does not answer.",
+        "fr": "Les prévisions viennent de MétéoMédia pour la position de votre maison dans Gladys : rien à saisir. Environnement et Changement climatique Canada ajoute les alertes officielles, l’indice UV, le radar de précipitations et une source de repli quand MétéoMédia ne répond pas."
+      },
+      "links": [
+        {
+          "url": "https://www.meteomedia.com",
+          "label": {
+            "en": "MétéoMédia",
+            "fr": "MétéoMédia"
+          }
+        },
+        {
+          "url": "https://meteo.gc.ca",
+          "label": {
+            "en": "Environment Canada weather",
+            "fr": "Météo d’Environnement Canada"
+          }
+        }
+      ]
+    },
+    {
+      "key": "eccc_alerts",
+      "type": "boolean",
+      "label": {
+        "en": "Environment Canada alerts",
+        "fr": "Alertes d’Environnement Canada"
+      },
+      "description": {
+        "en": "Official warnings, watches, advisories and statements for your house. They feed the weather widget and the core “weather alert” scene trigger.",
+        "fr": "Avertissements, veilles, avis et bulletins officiels pour votre maison. Ils alimentent le widget météo et le déclencheur de scène « alerte météo »."
+      },
+      "default": true
+    },
+    {
+      "key": "feels_like_alerts",
+      "type": "boolean",
+      "label": {
+        "en": "Feels-like alerts (estimates)",
+        "fr": "Alertes de ressenti (estimations)"
+      },
+      "description": {
+        "en": "Adds an alert when the humidex or the wind chill computed by the integration reaches a real risk. Not official: they mix with the Environment Canada alerts.",
+        "fr": "Ajoute une alerte quand l’humidex ou le refroidissement éolien calculé par l’intégration atteint un risque réel. Non officielles : elles se mêlent aux alertes d’Environnement Canada."
+      },
+      "default": false
+    },
+    {
+      "key": "fallback_source",
+      "type": "select",
+      "display": "radio",
+      "label": {
+        "en": "Fallback source",
+        "fr": "Source de repli"
+      },
+      "description": {
+        "en": "Used when MétéoMédia does not answer. Environment Canada also provides the UV index.",
+        "fr": "Utilisée quand MétéoMédia ne répond pas. Environnement Canada fournit aussi l’indice UV."
+      },
+      "default": "eccc",
+      "options": [
+        {
+          "value": "eccc",
+          "label": {
+            "en": "Environment Canada",
+            "fr": "Environnement Canada"
+          }
+        },
+        {
+          "value": "none",
+          "label": {
+            "en": "None",
+            "fr": "Aucune"
+          }
+        }
+      ]
+    },
+    {
+      "key": "radar_image",
+      "type": "boolean",
+      "label": {
+        "en": "Precipitation radar",
+        "fr": "Radar de précipitations"
+      },
+      "description": {
+        "en": "Environment Canada radar around your house, shown in the weather widget when its “provider images” option is on.",
+        "fr": "Radar d’Environnement Canada autour de votre maison, affiché par le widget météo quand son option « images du fournisseur » est activée."
+      },
+      "default": true
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_sources",
+      "label": {
+        "en": "Test the weather sources",
+        "fr": "Tester les sources météo"
+      },
+      "timeout_seconds": 30
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "feels_like_level_changed",
+      "label": {
+        "en": "Feels-like level changed",
+        "fr": "Niveau de ressenti changé"
+      },
+      "description": {
+        "en": "The humidex or the wind chill at a house reached a new Environment Canada risk level.",
+        "fr": "L’humidex ou le refroidissement éolien d’une maison a atteint un nouveau niveau de risque d’Environnement Canada."
+      },
+      "fields": [
+        {
+          "key": "level",
+          "type": "select",
+          "label": {
+            "en": "Level reached",
+            "fr": "Niveau atteint"
+          },
+          "description": {
+            "en": "Empty: any level. Fires even when the index jumps over this level.",
+            "fr": "Vide : tous les niveaux. Se déclenche même si l’indice saute ce niveau."
+          },
+          "options": [
+            {
+              "value": "cold_extreme",
+              "label": {
+                "en": "Extreme cold (wind chill ≤ −55)",
+                "fr": "Froid extrême (refroidissement ≤ −55)"
+              }
+            },
+            {
+              "value": "cold_severe",
+              "label": {
+                "en": "Severe cold (−48 to −54)",
+                "fr": "Froid grave (−48 à −54)"
+              }
+            },
+            {
+              "value": "cold_very_high",
+              "label": {
+                "en": "Very high cold (−40 to −47)",
+                "fr": "Froid très élevé (−40 à −47)"
+              }
+            },
+            {
+              "value": "cold_high",
+              "label": {
+                "en": "High cold (−28 to −39)",
+                "fr": "Froid élevé (−28 à −39)"
+              }
+            },
+            {
+              "value": "cold_moderate",
+              "label": {
+                "en": "Moderate cold (−10 to −27)",
+                "fr": "Froid modéré (−10 à −27)"
+              }
+            },
+            {
+              "value": "comfortable",
+              "label": {
+                "en": "Low risk",
+                "fr": "Risque faible"
+              }
+            },
+            {
+              "value": "heat_discomfort",
+              "label": {
+                "en": "Some discomfort (humidex 30 to 39)",
+                "fr": "Inconfort (humidex 30 à 39)"
+              }
+            },
+            {
+              "value": "heat_great_discomfort",
+              "label": {
+                "en": "Great discomfort (humidex 40 to 45)",
+                "fr": "Grand inconfort (humidex 40 à 45)"
+              }
+            },
+            {
+              "value": "heat_danger",
+              "label": {
+                "en": "Dangerous (humidex 46 to 53)",
+                "fr": "Dangereux (humidex 46 à 53)"
+              }
+            },
+            {
+              "value": "heat_stroke",
+              "label": {
+                "en": "Heat stroke imminent (humidex ≥ 54)",
+                "fr": "Coup de chaleur imminent (humidex ≥ 54)"
+              }
+            }
+          ]
+        },
+        {
+          "key": "direction",
+          "type": "select",
+          "label": {
+            "en": "Direction",
+            "fr": "Sens"
+          },
+          "options": [
+            {
+              "value": "worsening",
+              "label": {
+                "en": "Getting worse",
+                "fr": "Aggravation"
+              }
+            },
+            {
+              "value": "improving",
+              "label": {
+                "en": "Getting better",
+                "fr": "Amélioration"
+              }
+            }
+          ]
+        },
+        {
+          "key": "house",
+          "type": "string",
+          "label": {
+            "en": "House",
+            "fr": "Maison"
+          },
+          "description": {
+            "en": "Exact name of the house in Gladys. Empty: every house.",
+            "fr": "Nom exact de la maison dans Gladys. Vide : toutes les maisons."
+          },
+          "placeholder": {
+            "en": "e.g. Home",
+            "fr": "ex. Maison"
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "level",
+          "type": "string",
+          "label": {
+            "en": "Level reached",
+            "fr": "Niveau atteint"
+          }
+        },
+        {
+          "key": "direction",
+          "type": "string",
+          "label": {
+            "en": "Direction",
+            "fr": "Sens"
+          }
+        },
+        {
+          "key": "previous_level",
+          "type": "string",
+          "label": {
+            "en": "Previous level",
+            "fr": "Niveau précédent"
+          }
+        },
+        {
+          "key": "current_level",
+          "type": "string",
+          "label": {
+            "en": "Current level",
+            "fr": "Niveau actuel"
+          }
+        },
+        {
+          "key": "index",
+          "type": "string",
+          "label": {
+            "en": "Index (humidex, wind_chill)",
+            "fr": "Indice (humidex, wind_chill)"
+          }
+        },
+        {
+          "key": "value",
+          "type": "number",
+          "label": {
+            "en": "Index value",
+            "fr": "Valeur de l’indice"
+          }
+        },
+        {
+          "key": "unit",
+          "type": "string",
+          "label": {
+            "en": "Unit",
+            "fr": "Unité"
+          }
+        },
+        {
+          "key": "house",
+          "type": "string",
+          "label": {
+            "en": "House",
+            "fr": "Maison"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé"
+          }
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "key": "feels_like",
+      "label": {
+        "en": "Feels like",
+        "fr": "Ressenti"
+      },
+      "description": {
+        "en": "Humidex or wind chill with its risk level, worst hour, frostbite time, black ice.",
+        "fr": "Humidex ou refroidissement et son niveau de risque, pire heure, gelure, verglas."
+      },
+      "icon": "thermometer",
+      "settings": [
+        {
+          "key": "house",
+          "type": "string",
+          "label": {
+            "en": "House",
+            "fr": "Maison"
+          },
+          "description": {
+            "en": "Name of the house in Gladys. Empty: the first located house.",
+            "fr": "Nom de la maison dans Gladys. Vide : la première maison localisée."
+          },
+          "placeholder": {
+            "en": "e.g. Home",
+            "fr": "ex. Maison"
+          }
+        }
+      ]
+    }
+  ]
+}

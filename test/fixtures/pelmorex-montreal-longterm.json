@@ -1,0 +1,1293 @@
+{
+  "longTerm": [
+    {
+      "time": {
+        "local": "2026-10-10T06:00",
+        "utc": "2026-10-10T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 11,
+      "day": {
+        "weatherCode": {
+          "value": "C",
+          "icon": 1,
+          "text": "Sunny",
+          "bgImage": "clearday"
+        },
+        "cloudCover": 0,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 12,
+          "reliability": null
+        },
+        "feelsLike": 11,
+        "wind": {
+          "direction": "S",
+          "speed": 11,
+          "gust": 17,
+          "reliability": null,
+          "degree": 180
+        },
+        "pop": 0,
+        "pressure": null,
+        "relativeHumidity": 43,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "S+N",
+          "icon": 19,
+          "text": "Partly cloudy",
+          "bgImage": "clearnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 6,
+          "reliability": null
+        },
+        "feelsLike": 3,
+        "wind": {
+          "direction": "SE",
+          "speed": 15,
+          "gust": 23,
+          "reliability": null,
+          "degree": 135
+        },
+        "pop": 20,
+        "pressure": null,
+        "relativeHumidity": 76,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekend",
+      "pop": 20
+    },
+    {
+      "time": {
+        "local": "2026-10-11T06:00",
+        "utc": "2026-10-11T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 3,
+      "day": {
+        "weatherCode": {
+          "value": "B",
+          "icon": 3,
+          "text": "A mix of sun and clouds",
+          "bgImage": "clearday"
+        },
+        "cloudCover": 70,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 18,
+          "reliability": null
+        },
+        "feelsLike": 18,
+        "wind": {
+          "direction": "S",
+          "speed": 24,
+          "gust": 36,
+          "reliability": null,
+          "degree": 180
+        },
+        "pop": 30,
+        "pressure": null,
+        "relativeHumidity": 52,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "O-N",
+          "icon": 8,
+          "text": "Mainly cloudy",
+          "bgImage": "cloudynight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 12,
+          "reliability": null
+        },
+        "feelsLike": 11,
+        "wind": {
+          "direction": "S",
+          "speed": 17,
+          "gust": 26,
+          "reliability": null,
+          "degree": 180
+        },
+        "pop": 30,
+        "pressure": null,
+        "relativeHumidity": 94,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekend",
+      "pop": 30
+    },
+    {
+      "time": {
+        "local": "2026-10-12T06:00",
+        "utc": "2026-10-12T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 11.2,
+        "range": "10-15"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 2,
+      "day": {
+        "weatherCode": {
+          "value": "B+",
+          "icon": 4,
+          "text": "Cloudy with sunny breaks",
+          "bgImage": "cloudyday"
+        },
+        "cloudCover": 80,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 17,
+          "reliability": null
+        },
+        "feelsLike": 17,
+        "wind": {
+          "direction": "W",
+          "speed": 12,
+          "gust": 18,
+          "reliability": null,
+          "degree": 270
+        },
+        "pop": 40,
+        "pressure": null,
+        "relativeHumidity": 72,
+        "rain": {
+          "value": 0.5,
+          "range": "<1"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "RN",
+          "icon": 29,
+          "text": "Rain",
+          "bgImage": "rainnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 8,
+          "reliability": null
+        },
+        "feelsLike": 6,
+        "wind": {
+          "direction": "NE",
+          "speed": 18,
+          "gust": 27,
+          "reliability": null,
+          "degree": 45
+        },
+        "pop": 80,
+        "pressure": null,
+        "relativeHumidity": 94,
+        "rain": {
+          "value": 10.7,
+          "range": "~10"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekend",
+      "pop": 80
+    },
+    {
+      "time": {
+        "local": "2026-10-13T06:00",
+        "utc": "2026-10-13T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 41.6,
+        "range": "35-45"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 0,
+      "day": {
+        "weatherCode": {
+          "value": "R+",
+          "icon": 10,
+          "text": "Rain at times heavy",
+          "bgImage": "stormday"
+        },
+        "cloudCover": 100,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 10,
+          "reliability": null
+        },
+        "feelsLike": 9,
+        "wind": {
+          "direction": "NE",
+          "speed": 13,
+          "gust": 20,
+          "reliability": null,
+          "degree": 45
+        },
+        "pop": 80,
+        "pressure": null,
+        "relativeHumidity": 87,
+        "rain": {
+          "value": 35,
+          "range": "30-40"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "RN",
+          "icon": 29,
+          "text": "Rain",
+          "bgImage": "rainnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 7,
+          "reliability": null
+        },
+        "feelsLike": 5,
+        "wind": {
+          "direction": "N",
+          "speed": 13,
+          "gust": 20,
+          "reliability": null,
+          "degree": 0
+        },
+        "pop": 80,
+        "pressure": null,
+        "relativeHumidity": 93,
+        "rain": {
+          "value": 6.6,
+          "range": "~5"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 80
+    },
+    {
+      "time": {
+        "local": "2026-10-14T06:00",
+        "utc": "2026-10-14T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0.2,
+        "range": "<1"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 1,
+      "day": {
+        "weatherCode": {
+          "value": "O-",
+          "icon": 8,
+          "text": "Mainly cloudy",
+          "bgImage": "cloudyday"
+        },
+        "cloudCover": 90,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 10,
+          "reliability": null
+        },
+        "feelsLike": 9,
+        "wind": {
+          "direction": "N",
+          "speed": 12,
+          "gust": 18,
+          "reliability": null,
+          "degree": 0
+        },
+        "pop": 30,
+        "pressure": null,
+        "relativeHumidity": 71,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "A-N",
+          "icon": 23,
+          "text": "Chance of a shower",
+          "bgImage": "rainnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 5,
+          "reliability": null
+        },
+        "feelsLike": 1,
+        "wind": {
+          "direction": "W",
+          "speed": 19,
+          "gust": 29,
+          "reliability": null,
+          "degree": 270
+        },
+        "pop": 40,
+        "pressure": null,
+        "relativeHumidity": 87,
+        "rain": {
+          "value": 0.2,
+          "range": "<1"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 40
+    },
+    {
+      "time": {
+        "local": "2026-10-15T06:00",
+        "utc": "2026-10-15T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 10,
+      "day": {
+        "weatherCode": {
+          "value": "C",
+          "icon": 1,
+          "text": "Sunny",
+          "bgImage": "clearday"
+        },
+        "cloudCover": 10,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 11,
+          "reliability": null
+        },
+        "feelsLike": 9,
+        "wind": {
+          "direction": "NW",
+          "speed": 23,
+          "gust": 35,
+          "reliability": null,
+          "degree": 315
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 54,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "S+N",
+          "icon": 19,
+          "text": "Partly cloudy",
+          "bgImage": "clearnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 4,
+          "reliability": null
+        },
+        "feelsLike": 2,
+        "wind": {
+          "direction": "NW",
+          "speed": 14,
+          "gust": 21,
+          "reliability": null,
+          "degree": 315
+        },
+        "pop": 20,
+        "pressure": null,
+        "relativeHumidity": 87,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 20
+    },
+    {
+      "time": {
+        "local": "2026-10-16T06:00",
+        "utc": "2026-10-16T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 21.6,
+        "range": "20-25"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 2,
+      "day": {
+        "weatherCode": {
+          "value": "R-",
+          "icon": 28,
+          "text": "Light rain",
+          "bgImage": "rainday"
+        },
+        "cloudCover": 80,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 11,
+          "reliability": null
+        },
+        "feelsLike": 9,
+        "wind": {
+          "direction": "SW",
+          "speed": 21,
+          "gust": 32,
+          "reliability": null,
+          "degree": 225
+        },
+        "pop": 70,
+        "pressure": null,
+        "relativeHumidity": 62,
+        "rain": {
+          "value": 3.6,
+          "range": "2-4"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "RN",
+          "icon": 29,
+          "text": "Rain",
+          "bgImage": "rainnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 7,
+          "reliability": null
+        },
+        "feelsLike": 4,
+        "wind": {
+          "direction": "N",
+          "speed": 21,
+          "gust": 32,
+          "reliability": null,
+          "degree": 0
+        },
+        "pop": 70,
+        "pressure": null,
+        "relativeHumidity": 87,
+        "rain": {
+          "value": 17.9,
+          "range": "15-20"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 70
+    },
+    {
+      "time": {
+        "local": "2026-10-17T06:00",
+        "utc": "2026-10-17T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 3.3,
+        "range": "2-4"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 1,
+      "day": {
+        "weatherCode": {
+          "value": "O-",
+          "icon": 8,
+          "text": "Mainly cloudy",
+          "bgImage": "cloudyday"
+        },
+        "cloudCover": 90,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 10,
+          "reliability": null
+        },
+        "feelsLike": 7,
+        "wind": {
+          "direction": "N",
+          "speed": 23,
+          "gust": 35,
+          "reliability": null,
+          "degree": 0
+        },
+        "pop": 30,
+        "pressure": null,
+        "relativeHumidity": 57,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "R-N",
+          "icon": 28,
+          "text": "Light rain",
+          "bgImage": "rainnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 5,
+          "reliability": null
+        },
+        "feelsLike": 1,
+        "wind": {
+          "direction": "NW",
+          "speed": 12,
+          "gust": 18,
+          "reliability": null,
+          "degree": 315
+        },
+        "pop": 60,
+        "pressure": null,
+        "relativeHumidity": 81,
+        "rain": {
+          "value": 3.3,
+          "range": "2-4"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekend",
+      "pop": 60
+    },
+    {
+      "time": {
+        "local": "2026-10-18T06:00",
+        "utc": "2026-10-18T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 9.6,
+        "range": "~10"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 0,
+      "day": {
+        "weatherCode": {
+          "value": "R",
+          "icon": 29,
+          "text": "Rain",
+          "bgImage": "rainday"
+        },
+        "cloudCover": 100,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 10,
+          "reliability": null
+        },
+        "feelsLike": 8,
+        "wind": {
+          "direction": "N",
+          "speed": 19,
+          "gust": 29,
+          "reliability": null,
+          "degree": 0
+        },
+        "pop": 60,
+        "pressure": null,
+        "relativeHumidity": 54,
+        "rain": {
+          "value": 8.8,
+          "range": "5-10"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "LN",
+          "icon": 28,
+          "text": "Cloudy with showers",
+          "bgImage": "rainnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 5,
+          "reliability": null
+        },
+        "feelsLike": 2,
+        "wind": {
+          "direction": "N",
+          "speed": 17,
+          "gust": 26,
+          "reliability": null,
+          "degree": 0
+        },
+        "pop": 60,
+        "pressure": null,
+        "relativeHumidity": 87,
+        "rain": {
+          "value": 0.8,
+          "range": "~1"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekend",
+      "pop": 60
+    },
+    {
+      "time": {
+        "local": "2026-10-19T06:00",
+        "utc": "2026-10-19T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 2,
+      "day": {
+        "weatherCode": {
+          "value": "O-",
+          "icon": 8,
+          "text": "Mainly cloudy",
+          "bgImage": "cloudyday"
+        },
+        "cloudCover": 90,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 14,
+          "reliability": null
+        },
+        "feelsLike": 13,
+        "wind": {
+          "direction": "N",
+          "speed": 15,
+          "gust": 23,
+          "reliability": null,
+          "degree": 0
+        },
+        "pop": 30,
+        "pressure": null,
+        "relativeHumidity": 59,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "C-N",
+          "icon": 18,
+          "text": "Clear",
+          "bgImage": "clearnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 8,
+          "reliability": null
+        },
+        "feelsLike": 7,
+        "wind": {
+          "direction": "W",
+          "speed": 9,
+          "gust": 14,
+          "reliability": null,
+          "degree": 270
+        },
+        "pop": 20,
+        "pressure": null,
+        "relativeHumidity": 93,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 30
+    },
+    {
+      "time": {
+        "local": "2026-10-20T06:00",
+        "utc": "2026-10-20T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 11,
+      "day": {
+        "weatherCode": {
+          "value": "C",
+          "icon": 1,
+          "text": "Sunny",
+          "bgImage": "clearday"
+        },
+        "cloudCover": 0,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 14,
+          "reliability": null
+        },
+        "feelsLike": 13,
+        "wind": {
+          "direction": "W",
+          "speed": 14,
+          "gust": 21,
+          "reliability": null,
+          "degree": 270
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 67,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "C-N",
+          "icon": 18,
+          "text": "Clear",
+          "bgImage": "clearnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 8,
+          "reliability": null
+        },
+        "feelsLike": 7,
+        "wind": {
+          "direction": "SW",
+          "speed": 11,
+          "gust": 17,
+          "reliability": null,
+          "degree": 225
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 93,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 10
+    },
+    {
+      "time": {
+        "local": "2026-10-21T06:00",
+        "utc": "2026-10-21T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 9,
+      "day": {
+        "weatherCode": {
+          "value": "C",
+          "icon": 1,
+          "text": "Sunny",
+          "bgImage": "clearday"
+        },
+        "cloudCover": 10,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 14,
+          "reliability": null
+        },
+        "feelsLike": 14,
+        "wind": {
+          "direction": "SW",
+          "speed": 7,
+          "gust": 11,
+          "reliability": null,
+          "degree": 225
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 63,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "C-N",
+          "icon": 18,
+          "text": "Clear",
+          "bgImage": "clearnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 8,
+          "reliability": null
+        },
+        "feelsLike": 7,
+        "wind": {
+          "direction": "E",
+          "speed": 6,
+          "gust": 9,
+          "reliability": null,
+          "degree": 90
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 93,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 10
+    },
+    {
+      "time": {
+        "local": "2026-10-22T06:00",
+        "utc": "2026-10-22T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 11,
+      "day": {
+        "weatherCode": {
+          "value": "C",
+          "icon": 1,
+          "text": "Sunny",
+          "bgImage": "clearday"
+        },
+        "cloudCover": 0,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 13,
+          "reliability": null
+        },
+        "feelsLike": 13,
+        "wind": {
+          "direction": "E",
+          "speed": 7,
+          "gust": 11,
+          "reliability": null,
+          "degree": 90
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 67,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "C-N",
+          "icon": 18,
+          "text": "Clear",
+          "bgImage": "clearnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 6,
+          "reliability": null
+        },
+        "feelsLike": 5,
+        "wind": {
+          "direction": "E",
+          "speed": 7,
+          "gust": 11,
+          "reliability": null,
+          "degree": 90
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 87,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 10
+    },
+    {
+      "time": {
+        "local": "2026-10-23T06:00",
+        "utc": "2026-10-23T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 11,
+      "day": {
+        "weatherCode": {
+          "value": "C",
+          "icon": 1,
+          "text": "Sunny",
+          "bgImage": "clearday"
+        },
+        "cloudCover": 0,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 11,
+          "reliability": null
+        },
+        "feelsLike": 10,
+        "wind": {
+          "direction": "SE",
+          "speed": 12,
+          "gust": 18,
+          "reliability": null,
+          "degree": 135
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 62,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "C-N",
+          "icon": 18,
+          "text": "Clear",
+          "bgImage": "clearnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 6,
+          "reliability": null
+        },
+        "feelsLike": 5,
+        "wind": {
+          "direction": "SE",
+          "speed": 12,
+          "gust": 18,
+          "reliability": null,
+          "degree": 135
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 87,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekday",
+      "pop": 10
+    },
+    {
+      "time": {
+        "local": "2026-10-24T06:00",
+        "utc": "2026-10-24T10:00"
+      },
+      "maxTemperature": null,
+      "minTemperature": null,
+      "rain": {
+        "value": 0,
+        "range": "0"
+      },
+      "snow": {
+        "value": 0,
+        "range": "0"
+      },
+      "hoursOfSun": 10,
+      "day": {
+        "weatherCode": {
+          "value": "C",
+          "icon": 1,
+          "text": "Sunny",
+          "bgImage": "clearday"
+        },
+        "cloudCover": 0,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 11,
+          "reliability": null
+        },
+        "feelsLike": 10,
+        "wind": {
+          "direction": "SE",
+          "speed": 10,
+          "gust": 15,
+          "reliability": null,
+          "degree": 135
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 62,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "night": {
+        "weatherCode": {
+          "value": "C-N",
+          "icon": 18,
+          "text": "Clear",
+          "bgImage": "clearnight"
+        },
+        "cloudCover": null,
+        "potentialForThunder": null,
+        "temperature": {
+          "value": 6,
+          "reliability": null
+        },
+        "feelsLike": 5,
+        "wind": {
+          "direction": "NE",
+          "speed": 10,
+          "gust": 15,
+          "reliability": null,
+          "degree": 45
+        },
+        "pop": 10,
+        "pressure": null,
+        "relativeHumidity": 87,
+        "rain": {
+          "value": 0,
+          "range": "0"
+        },
+        "snow": {
+          "value": 0,
+          "range": "0"
+        }
+      },
+      "dayType": "weekend",
+      "pop": 10
+    }
+  ],
+  "display": {
+    "imageUrl": "https://icons.twnmm.com/wx_icons/v2/",
+    "unit": {
+      "cloudCover": "%",
+      "potentialForThunder": "%",
+      "temperature": "C",
+      "wind": "km/h",
+      "relativeHumidity": "%",
+      "pop": "%",
+      "pressure": "kPa",
+      "rain": "mm",
+      "snow": "cm"
+    }
+  }
+}

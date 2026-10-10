@@ -1,0 +1,43 @@
+{
+  "observation": {
+    "time": {
+      "local": "2026-10-10T07:57",
+      "utc": "2026-10-10T11:57"
+    },
+    "weatherCode": {
+      "value": "SCT",
+      "icon": 2,
+      "text": "A few clouds",
+      "bgimage": "clearday",
+      "overlay": "sunny"
+    },
+    "temperature": -5,
+    "dewPoint": -9,
+    "feelsLike": -10,
+    "wind": {
+      "direction": "N",
+      "speed": 13,
+      "gust": 20,
+      "degree": 0
+    },
+    "relativeHumidity": 73,
+    "pressure": {
+      "value": 101.5,
+      "trendKey": 2
+    },
+    "visibility": 48,
+    "ceiling": 9100
+  },
+  "display": {
+    "imageUrl": "https://icons.twnmm.com/wx_icons/v2/",
+    "unit": {
+      "temperature": "C",
+      "dewPoint": "C",
+      "wind": "km/h",
+      "relativeHumidity": "%",
+      "pressure": "kPa",
+      "visibility": "km",
+      "ceiling": "m"
+    }
+  }
+}
