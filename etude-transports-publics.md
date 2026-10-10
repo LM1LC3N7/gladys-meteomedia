@@ -1,149 +1,166 @@
-# Étude : intégrations Gladys Assistant pour les transports publics
+# Étude : intégrations Gladys Assistant pour les transports en commun au Canada
 
-*Date : 10 octobre 2026. Gladys v5.1.4 est la dernière version publiée (2 octobre 2026).*
+*Date : 10 octobre 2026. Gladys v5.1.4 est la dernière version (2 octobre 2026). Sauf mention contraire, chaque point d'accès (endpoint) cité a été appelé le 10 octobre 2026. Les points non vérifiés sont signalés par ⚠.*
 
 ## 1. Verdict
 
-**Oui, c'est faisable**, et c'est même le cas d'usage que Gladys a prévu pour ses **intégrations externes**.
+**Oui, c'est faisable. Le Canada s'y prête même mieux que la France.**
 
-- **Ne pas viser le cœur de Gladys.** La spec officielle cite « transport schedules » et « next departures » parmi les sujets qui relèvent des intégrations externes. La PR #3061 (widget « Sorties Cinéma ») a été fermée pour cette raison de périmètre, alors que son code était propre.
-- **L'intégration externe est la bonne voie.** C'est un conteneur Docker publié depuis ton propre dépôt GitHub. Il est indexé automatiquement dans le store, sans PR ni validation du mainteneur.
-- **Un précédent existe :** [`prohand/gladys-transport-commun-lyonnais`](https://github.com/prohand/gladys-transport-commun-lyonnais) couvre le réseau TCL de Lyon. C'est l'implémentation de référence à étudier.
-- **Rien n'existe encore pour l'Île-de-France, la SNCF ou la France entière.** Ni le store ni le forum ne contiennent d'intégration Île-de-France (IDFM/RATP), SNCF, ou multi-réseaux. La place est libre.
+- **Côté Gladys.** Il faut passer par une **intégration externe** : un conteneur Docker publié depuis ton propre dépôt GitHub. Elle est indexée automatiquement dans le store, sans PR ni validation du mainteneur. Les horaires de transport sont explicitement exclus du cœur de Gladys (voir §2).
+- **Côté données.** Presque tout le Canada utilise un seul standard, **GTFS / GTFS-RT**. Une grande partie de ces flux temps réel est **ouverte et sans clé** : TTC, MiWay, YRT, Hamilton, London, Calgary, Edmonton, Halifax, BC Transit, Saskatoon, Saguenay. Un seul lecteur GTFS-RT générique couvre donc des dizaines de réseaux. En France, il fallait jongler entre SIRI, SIRI-Lite et GTFS-RT.
+- **Personne ne l'a encore fait.** Le store Gladys ne contient aucune intégration de transport canadienne. La seule intégration de transport existante concerne Lyon (`prohand/gladys-transport-commun-lyonnais`). Elle sert de modèle.
+- **Le cas Montréal (STM) est le plus intéressant, et le plus exigeant.** Il faut une clé par utilisateur et un quota de 10 000 appels/jour. L'état du métro passe par une API JSON à part (« i3 »). Le fichier d'horaires statiques est très lourd (voir §3.1).
 
 ## 2. Le modèle « intégration externe » de Gladys
 
 | Élément | Détail |
 |---|---|
-| Versions mini | 4.84.0 pour les intégrations externes, **5.1.0** pour les widgets, déclencheurs et actions de scène |
-| Point de départ | template [`GladysAssistant/integration-template-js`](https://github.com/GladysAssistant/integration-template-js) et SDK `@gladysassistant/integration-sdk` |
-| Manifeste | `gladys-assistant-integration.json` à la racine, plus `docs/fr.md` et `docs/en.md` (300 caractères minimum chacun) |
-| Publication | topic GitHub `gladys-assistant-integration`, puis indexation horaire par [integration-store](https://github.com/GladysAssistant/integration-store) |
-| Validation locale | `npx github:GladysAssistant/integration-store .` |
-| Sandbox | 256 Mo de RAM, 0,5 CPU, système de fichiers en lecture seule sauf `/data`, réseau sortant libre |
-| Langage | libre (Docker), mais le SDK n'existe qu'en JS/Node |
+| Versions minimales | 4.84.0 pour les intégrations externes, **5.1.0** pour les widgets, déclencheurs et actions de scène |
+| Point de départ | template [`GladysAssistant/integration-template-js`](https://github.com/GladysAssistant/integration-template-js), SDK `@gladysassistant/integration-sdk`, Node ≥ 22 |
+| Manifeste | `gladys-assistant-integration.json`, plus `docs/fr.md` et `docs/en.md`. Ces deux langues suffisent pour un public canadien. |
+| Publication | topic GitHub `gladys-assistant-integration`, indexé toutes les heures par [integration-store](https://github.com/GladysAssistant/integration-store) |
+| Sandbox | **256 Mo de RAM**, 0,5 CPU, système de fichiers en lecture seule sauf `/data`, réseau sortant libre |
 
 Documentation : <https://gladysassistant.com/docs/dev/external-integrations/>
 
-### Ce qu'on peut exposer
+**Ce qu'une intégration peut exposer**
 
-- **Devices et features.**
-  - Il n'existe pas de catégorie « transport », et il ne faut pas compter en obtenir une : les catégories doivent décrire des capacités et s'appuyer sur les standards Matter ou Zigbee.
-  - On utilise donc :
-    - `duration/integer` (unité `minutes`) pour les temps d'attente, avec `keep_history: false` ;
-    - `text/text` pour la ligne, la destination ou une perturbation.
-  - Ces features sont mises à jour avec `publishState`, ou `publishStates` par lot (100 maximum).
-- **Widgets de tableau de bord** (type `external-widget`).
-  - Le manifeste en déclare jusqu'à 5.
-  - Le contenu est un arbre déclaratif (pas de HTML) construit avec les composants `text`, `value`, `gauge`, `status` (10 lignes maximum), `card-list`, `chart`, `image` et `button`.
-  - Un rafraîchissement peut être demandé avec `widget.refresh`, limité à une fois toutes les 10 s.
-  - C'est idéal pour un tableau des prochains départs.
-- **Déclencheurs de scène.** Exemples : « départ imminent (< N min) », « perturbation sur la ligne X ». Ils fournissent des variables utilisables dans les messages : arrêt, ligne, direction, minutes.
-- **Actions.** Exemples : « rechercher un arrêt », « rafraîchir maintenant ».
-- **Polling.** Le SDK propose `onPoll` aux fréquences du cœur (1 s à 60 s). Il faudra limiter les appels selon les quotas des API (voir §3).
+- **Features.** Il n'existe pas de catégorie « transport ». On utilise `duration/integer` en minutes pour les temps d'attente (avec `keep_history: false`) et `text/text` pour la ligne, la destination ou l'état du métro.
+- **Widgets.** Jusqu'à 5, avec des composants déclaratifs : `status`, `card-list`, `value`, etc. Exemples : un tableau des prochains départs ou l'état des lignes de métro.
+- **Déclencheurs de scène.** Exemples : « bus dans N min », « interruption ligne orange », « station BIXI vide ».
+- **Actions.** Par exemple « rechercher un arrêt ».
 
-### Alternatives sans développer d'intégration
+**Pourquoi pas le cœur de Gladys ?** La spec officielle cite « transport schedules » et « next departures » parmi ce qui relève de l'externe. Une PR de widget « Sorties Cinéma » a d'ailleurs été refusée pour cette raison de périmètre.
 
-Elles servent à prototyper, pas à produire une solution durable :
+**Prototyper sans code.** Une scène Gladys peut appeler une API à intervalle régulier avec une requête HTTP et utiliser la réponse via `{{data.xxx}}`. Ça marche pour du JSON, comme l'état du métro i3 ou Winnipeg v4. Ça ne marche **pas** pour le GTFS-RT, qui est du protobuf.
 
-- **Scène + requête HTTP.**
-  - Une scène lancée à intervalle régulier appelle l'API ; la réponse est disponible dans les étapes suivantes via `{{data.xxx}}`.
-  - On peut ensuite écrire la valeur dans une feature texte ou envoyer un message.
-  - Ça suffit pour un seul arrêt SIRI-Lite en JSON, mais pas pour du GTFS-RT, qui est du protobuf.
-- **MQTT ou Node-RED.** Un script externe publie sur `gladys/master/device/<device>/feature/<feature>/state` (ou `/text` pour une valeur texte).
+## 3. Sources de données
 
-## 3. Sources de données transport (France d'abord)
+### 3.1 Québec
 
-| Source | Authentification | Quota | Temps réel | Format | Couverture | Difficulté |
-|---|---|---|---|---|---|---|
-| **PRIM IDFM** | clé `apikey` personnelle (compte gratuit) | **~1 000 appels/jour** pour les clés récentes (≈ 1 appel/86 s) | oui | SIRI-Lite JSON, Navitia | Île-de-France, tous opérateurs (RATP, Transilien…) | moyenne |
-| **API SNCF** (api.sncf.com, Navitia) | jeton personnel, Basic auth | 5 000/jour | oui | JSON Navitia | trains SNCF | facile |
-| **SNCF via le proxy du PAN** | aucune | limite du proxy | oui | GTFS-RT, SIRI-Lite | TGV, Intercités, TER | moyenne (il faut le GTFS pour les identifiants) |
-| **transport.data.gouv.fr (PAN)** | souvent aucune | limite du proxy | 219 jeux GTFS-RT, 42 SIRI, 7 SIRI-Lite | GTFS-RT, SIRI(-Lite) | toute la France | moyenne (particularités de chaque réseau) |
-| **Transitous** (MOTIS) | aucune, User-Agent obligatoire | usage raisonnable, prévenir l'équipe | oui | JSON | monde entier, dont la majorité de la France | **la plus simple**, mais risque sur la politique d'usage |
-| **GBFS** (vélos en libre-service) | aucune | aucun | oui | JSON | 155 systèmes en France (Vélib', Vélo'v…) | facile |
-| Navitia.io | jeton | ≈ 5 000/mois (chiffre ancien) | oui | JSON | plusieurs régions | **à éviter** (avenir incertain) |
-| iRail (Belgique), transport.opendata.ch (Suisse) | aucune | 3 req/s, ou usage raisonnable | oui | JSON | rail belge, transports suisses | facile |
+| Réseau | Temps réel | Authentification et quota | Licence et attribution |
+|---|---|---|---|
+| **STM Montréal** | GTFS-RT TripUpdates et VehiclePositions (**bus seulement**), plus l'API **i3 « état du service »** (métro et bus, en JSON) | en-tête `apiKey`, compte personnel sur le [portail développeurs](https://portail.developpeurs.stm.info/apihub). **10 req/s et 10 000/jour par compte, toutes applis confondues.** | CC BY 4.0, citer la STM. ⚠ Les conditions interdisent de développer une appli d'*horaires de métro* à partir de leurs horaires. |
+| **exo** (trains de banlieue, bus des couronnes) et **RTL** Longueuil | GTFS-RT (trip, vehicle, alert) par secteur via **Chrono SAEIV** | en-tête `Ocp-Apim-Subscription-Key` ou `?token=`, inscription sur [portail-developpeur.chrono-saeiv.com](https://portail-developpeur.chrono-saeiv.com/). Quota ⚠ non publié. | CC BY 4.0 (exo), conditions propres à RTL |
+| **REM** | GTFS-RT **alertes seulement** | aucune | Le flux est hébergé par l'appli Transit : son statut officiel n'est pas établi ⚠. |
+| **STL** Laval | GTFS-RT sur demande par courriel, ou ancien flux XML Umo (ex-NextBus) sans clé | Umo : aucune | Ses conditions interdisent l'usage commercial ; Données Québec affiche pourtant CC-BY. Les deux se contredisent ⚠. |
+| **RTC** Québec | **aucun temps réel public trouvé** ⚠ (seulement des GTFS statiques de 32 Mo) | — | La mention d'attribution est obligatoire. |
+| **STO** Gatineau | GTFS-RT (trip, vehicle, alert) | clé publique, plus un hash SHA-256 (clé privée + date UTC). **120 téléchargements par tranche de 10 min.** Une clé par utilisateur, non transférable. | La mention d'attribution est obligatoire. |
+| **STS** Sherbrooke | GTFS-RT | sans clé selon le catalogue ; serveur injoignable depuis mon environnement, donc ⚠ | CC BY 4.0 |
+| **Saguenay** | GTFS-RT | **aucune (vérifié)** | ⚠ non précisée |
+| Petits réseaux (Saint-Jean-sur-Richelieu, Pierre-De Saurel, L'Inter des Laurentides, Saint-Hyacinthe…) | GTFS-RT via Zenbus ou Hubup | aucune | variable |
+| **VIA Rail** | pas de temps réel officiel. Il existe un JSON non officiel, `tsimobile.viarail.ca/data/allData.json`. | aucune | GTFS sous Licence du gouvernement ouvert – Canada. Le JSON n'a **aucune licence** : réservé à un usage personnel. |
+| **BIXI** / **àVélo** | GBFS : `gbfs.velobixi.com/gbfs/2-2/gbfs.json` et `quebec.publicbikesystem.net/customer/gbfs/v3.0/gbfs.json` | aucune | ⚠ non précisée |
+| **Routes (MTMD / Québec 511)** | Flux WFS en GeoJSON : `evenements`, `chantiers_mtmdet`, `conditions_routieres` (conditions hivernales), `infos_cameras` | aucune | CC BY 4.0 |
 
-### Particularités par réseau
+**Taille des horaires statiques.** Le fichier GTFS de la STM fait 43 Mo compressé, et son `stop_times.txt` **202 Mo décompressé**. Pour la RTC, c'est 174 Mo. Avec 256 Mo de RAM, il faut lire ces fichiers en flux et ne garder que les arrêts choisis par l'utilisateur.
 
-| Réseau | Temps réel | Authentification |
-|---|---|---|
-| Bordeaux TBM | SIRI-Lite et GTFS-RT | clé publique `opendata-bordeaux-metropole-flux-gtfs-rt` |
-| Lyon TCL | SIRI-Lite | compte data.grandlyon, Basic auth |
-| Strasbourg CTS | SIRI-Lite | jeton demandé par mail |
-| Toulouse Tisséo | GTFS-RT | aucune (clé pour l'API v2) |
-| Rennes STAR, Nantes Naolib, Montpellier TaM, Grenoble TAG, Lille Ilévia | GTFS-RT | aucune |
+**Catalogues de flux.**
+- [Données Québec](https://www.donneesquebec.ca/recherche/api/3/action/package_search?q=gtfs) recense 22 jeux GTFS, consultables par une API sans clé. Plusieurs liens sont périmés (exo, STS).
+- La [Mobility Database](https://files.mobilitydatabase.org/feeds_v2.csv) (MobilityData, basée à Montréal) fournit un CSV complet sans jeton, qui indique pour chaque flux s'il faut une clé et sous quel nom. Son API, elle, demande un compte.
 
-**Points pratiques**
+### 3.2 Reste du Canada
 
-- **RATP :** l'API publique historique n'existe plus. Le temps réel de la RATP passe désormais par PRIM.
-- **Identifiants d'arrêt PRIM :** `STIF:StopPoint:Q:<id>:`, avec le « : » final. Les identifiants viennent des jeux open data IDFM `arrets` et `zones-d-arrets`, accessibles sans clé.
-- **Le GTFS statique IDFM pèse 149 Mo :** c'est inexploitable sur un Raspberry Pi ou dans 256 Mo de RAM. Il faut s'appuyer sur les API temps réel et les jeux d'arrêts.
-- **Les GTFS de villes pèsent de 5 à 10 Mo :** ça reste gérable. La lib `gtfs-realtime-bindings` est légère.
+| Réseau | Temps réel | Authentification et quota | Remarques |
+|---|---|---|---|
+| **TTC Toronto** | GTFS-RT sur `gtfsrt.ttc.ca` : `/trips/update`, `/trips/subway` (métro depuis juin 2026), `/vehicles/position`, `/alerts/*` | **aucune** | Licence du gouvernement ouvert – Toronto (attribution). Le GTFS complet pèse 84 Mo compressé et 432 Mo décompressé, et doit être rechargé chaque mois. Le flux `gtfsrt.ttc.ca` correspond au fichier `completegtfs.zip`, et `bustime.ttc.ca` à `surfacegtfs.zip`. |
+| **GO Transit / UP Express** (Metrolinx) | GTFS-RT et API JSON (`NextService`, `UnionDepartures`, alertes) | `?key=`, compte gratuit. La clé peut être coupée en cas d'abus. | Licence du gouvernement ouvert – Ontario |
+| MiWay, Brampton, YRT, Hamilton (HSR), London (LTC), Durham, Burlington, Barrie, Kingston | GTFS-RT | **aucune** | Le flux TripUpdates de London pèse 4,4 Mo, ce qui pèse lourd en mémoire. Le GRT (Waterloo) n'a pas pu être vérifié : son serveur filtre les adresses IP hors Canada ⚠. |
+| **OC Transpo** Ottawa | GTFS-RT VehiclePositions et TripUpdates (environnement « beta »), sans flux d'alertes | `Ocp-Apim-Subscription-Key`, compte gratuit. Quota ⚠ non publié. | L'ancienne API 2.0 a été retirée le 30 avril 2025. Le GTFS pèse 70 Mo. |
+| **TransLink** Vancouver | GTFS-RT v3 | `?apikey=`, inscription soumise à approbation. **1 000 appels/jour.** | L'ancienne API RTTI a disparu. Mention obligatoire : « Some of the data used in this product or service is provided by permission of TransLink ». |
+| **BC Transit** (Victoria, Kelowna, etc.) | GTFS-RT | aucune | Citer BC Transit. |
+| **Calgary, Edmonton, Saskatoon, Halifax** | GTFS-RT | aucune | Calgary met son flux à jour toutes les 30 s. Saskatoon a changé d'hôte et le catalogue n'est pas à jour. |
+| **Regina** | GTFS-RT, **alertes seulement** | aucune | |
+| **Winnipeg Transit** | pas de GTFS-RT, mais une API REST v4 en JSON (horaires des arrêts, avis de service) | `?api-key=`, **100 req/min** | données sous licence PDDL (domaine public) |
+| Nouveau-Brunswick, Terre-Neuve | GTFS statique seulement | — | |
+| **Vélos en libre-service** | GBFS : Bike Share Toronto, Mobi Vancouver, Hamilton. Lime et Bird à Ottawa, Calgary et Edmonton. | aucune | Ottawa n'a pas de vélopartage municipal. |
 
-### Licences
+### 3.3 Agrégateurs
 
-- **Licence Ouverte :** citer la source suffit.
-- **ODbL :** citer la source. Une intégration qui affiche les données localement ne redistribue pas de base de données, donc la clause de partage à l'identique ne s'applique pas. Il ne faut simplement pas embarquer de jeux de données dans le dépôt.
-- **Licence Mobilités** (PRIM, Lyon) : le réutilisateur doit être identifié, donc **chaque utilisateur crée son propre compte et saisit sa clé**. Il ne faut jamais livrer de clé partagée dans le code.
-- **Transitous :** réservé aux projets open source non commerciaux. Il faut envoyer un User-Agent avec le nom de l'appli et un contact, citer les sources et OSM, et **contacter l'équipe** avant un déploiement multi-utilisateurs.
+- **Transitous** ([API MOTIS](https://transitous.org/api/), sans clé) :
+  - Ses données incluent du temps réel pour exo, MiWay, YRT, London, Calgary, Edmonton, Halifax, Saskatoon, Victoria, TransLink et OC Transpo.
+  - **Elles n'en incluent pas pour la STM, la RTC, la STO, la STS ni la TTC.**
+  - Le service est réservé aux projets open source non commerciaux. Il faut envoyer un User-Agent avec un contact et prévenir l'équipe avant un usage par beaucoup d'utilisateurs.
+  - C'est un bon **complément** sans clé, mais ça ne suffit pas pour Montréal.
+- **Appli Transit** : le palier gratuit de son API (5 appels/min, 1 500/mois) est trop faible pour du polling.
 
-## 4. Options d'architecture
+## 4. Contraintes techniques (256 Mo de RAM)
+
+- **Mémoire au décodage.** Mesures sous Node 22 : décoder le TripUpdates de la TTC (531 Ko) fait monter la mémoire du processus à environ 84 Mo, et celui de London (4,4 Mo) à environ 158 Mo. Pour tenir dans 256 Mo :
+  - décoder **un flux à la fois** ;
+  - filtrer tout de suite sur les arrêts suivis, puis libérer l'objet décodé ;
+  - demander les réponses compressées (gzip) et utiliser les ETag.
+- **Bibliothèque protobuf.** `gtfs-realtime-bindings` 2.2 ajoute environ 28 Mo de dépendances. `protobufjs` avec le `.proto` officiel, ou `gtfs-rt-bindings`, sont plus légers.
+- **GTFS statique.** Ne jamais charger `stop_times` en mémoire ni en SQLite. Il faut le lire en flux (`yauzl` et `csv-parse`) en ne gardant que les arrêts choisis. Une alternative : ne prendre que `stops.txt` pour les noms, et les heures prévues directement dans les TripUpdates.
+- **Quotas, budget de polling par réseau :**
+  - **STM :** TripUpdates toutes les 30 s et i3 toutes les 2 min ≈ 6 500 appels/jour, sur 10 000 autorisés.
+  - **TransLink :** 1 000 appels/jour, soit un appel toutes les 90 s environ.
+  - **STO :** 120 téléchargements par tranche de 10 min.
+  - Il faut donc des intervalles configurables, avec éventuellement des plages horaires (par exemple « matin 7 h–9 h »).
+- **Clés API.** Une clé saisie par chaque utilisateur, jamais de clé embarquée dans le code. Les quotas sont comptés par compte (STM, TransLink), et les conditions de la STO interdisent de transférer sa clé.
+- **Attribution.** Il faut afficher la mention exigée par chaque réseau dans la doc et dans le widget : RTC, STO, TransLink, Toronto, Halifax, Metrolinx…
+
+## 5. Options et recommandation
 
 | Option | Contenu | Avantages | Inconvénients |
 |---|---|---|---|
-| **A. Une intégration « Transports en France » multi-sources** | providers Transitous (défaut), PRIM, SNCF, GTFS-RT/SIRI-Lite générique, GBFS | un seul dépôt, une UX homogène, toute la France | plus gros chantier ; config plus complexe |
-| **B. Plusieurs intégrations ciblées** | `gladys-idfm` (PRIM), `gladys-sncf`, `gladys-velos-gbfs`… | chaque intégration est simple, livrée vite, testée isolément | code SIRI/GTFS-RT dupliqué (sauf en le factorisant dans un paquet npm partagé) |
-| **C. Prototype par scène HTTP** | aucune ligne de code | immédiat | un seul arrêt, pas de widget riche, fragile |
+| **A. Intégration générique « Transit Canada »** | un lecteur GTFS-RT, plus des préréglages par réseau (URL, type de clé, attribution) | une seule base de code pour plus de 25 réseaux ; GTFS-RT est déjà le standard commun | configuration plus riche ; ne couvre pas les API spécifiques (i3 de la STM, Winnipeg v4, API JSON de GO) |
+| **B. Intégrations dédiées** | `gladys-stm`, `gladys-ttc`, `gladys-go`… | une expérience sur mesure pour chaque réseau | code dupliqué |
+| **C. Prototype par scène HTTP** | sans code | immédiat | JSON seulement, donc i3 et Winnipeg uniquement |
 
-**Recommandation : option B, avec une bibliothèque commune.** Le TCL lyonnais existe déjà et marche bien sur ce modèle.
+**Recommandation.** C'est l'inverse de la France : **commencer par une intégration dédiée à Montréal, puis généraliser.**
 
-1. **`gladys-idfm` (PRIM).** Rien n'existe et c'est la plus forte demande. Le contenu prévu :
-   - choix des arrêts avec l'action `search_stops`, qui interroge le jeu open data IDFM ;
-   - une feature `duration` par prochain passage, plus des features texte ;
-   - un widget « Prochains départs » et un widget « Perturbations » ;
-   - un déclencheur « départ imminent » ;
-   - **une stratégie de quota.** Avec 1 000 appels par jour : 1 arrêt toutes les 2 min sur 24 h, ou un intervalle plus court seulement sur des plages horaires (« matin 7 h–9 h »). C'est un réglage clé de l'UX.
-2. **`gladys-sncf`** : départs et retards en gare, basés sur l'API SNCF (jeton personnel, 5 000 appels/jour).
-3. **`gladys-velos` (GBFS)** : générique, sans clé ; on choisit un système parmi ceux du catalogue du PAN.
-4. **Ensuite, un provider générique** couvrant Transitous, GTFS-RT et SIRI-Lite pour les autres villes. Il est à étudier après accord de l'équipe Transitous.
+1. **`gladys-stm` (Montréal).** C'est la plus forte valeur et elle n'existe pas :
+   - **Prochains passages de bus.** GTFS-RT avec la clé de l'utilisateur. Une feature `duration` par passage.
+   - **État des lignes de métro** (verte, orange, jaune, bleue). Via i3 : une feature texte par ligne, et un déclencheur « interruption de service ». Ce cas est utile, simple, et ne dépend pas des horaires de métro que les conditions de la STM excluent.
+   - **Bonus : stations BIXI** via GBFS, sans clé.
+   - **Widgets :** « Prochains départs », « État du métro », « BIXI ».
+2. **`gladys-transit-canada` (générique GTFS-RT)** :
+   - préréglages sans clé : TTC, MiWay, YRT, Hamilton, London, Calgary, Edmonton, Halifax, BC Transit, Saskatoon, Saguenay ;
+   - préréglages avec clé : exo et RTL (Chrono), STO (clé et hash), OC Transpo, TransLink, GO ;
+   - découverte des flux possible via le CSV de la Mobility Database.
+   - Le lecteur GTFS-RT et le filtrage par arrêt écrits pour l'étape 1 sont réutilisés ici.
+3. **`gladys-velos` (GBFS)** : BIXI, àVélo, Bike Share Toronto, Mobi, Lime et Bird.
+4. **Piste en synergie avec `gladys-meteomedia`** : les **conditions routières hivernales et les entraves du MTMD** (WFS ouvert, CC BY 4.0). On les présente avec la météo : « Météo et routes ». Déclencheur possible : « chaussée glacée sur mon trajet ».
 
-**Paquet commun suggéré :** parsers SIRI-Lite (stop-monitoring, general-message) et GTFS-RT, normalisés vers un format pivot `{ stop, line, direction, expectedAt, realtime, disruption }`, avec cache et gestion des quotas (ETag, backoff sur les 429).
-
-## 5. Contraintes techniques
-
-- **Pile technique :** Node ≥ 22 (le template et le TCL utilisent `node:test`, ESLint et Prettier), image Docker légère, état persistant dans `/data`.
-- **Documentation :** obligatoire en français et en anglais, avec l'attribution des sources de données.
-- **Intégration au cœur (non recommandée) :** il faudrait Node 24, Mocha, 100 % de couverture du patch et des traductions dans les 4 langues (en, fr, de, es). Ce serait pénible pour un sujet que le mainteneur a déjà jugé hors périmètre.
+**À écarter ou à garder en option personnelle :**
+- l'ancien flux NextBus/Umo de la TTC, officiellement retiré même s'il répond encore ;
+- le JSON non officiel de VIA Rail ;
+- le temps réel de la RTC, qui n'existe pas publiquement.
 
 ## 6. Prochaines étapes
 
-1. Lire le code de l'intégration TCL et du template JS.
-2. Créer un compte PRIM et vérifier le quota réellement attribué à la clé (les quotas varient selon la date de création).
-3. Écrire un prototype minimal de `gladys-idfm` : 1 arrêt, features `duration`, poll toutes les 120 s.
-4. Ouvrir un sujet sur le forum Gladys pour annoncer le projet et recueillir les besoins.
-5. Contacter Transitous si l'option multi-villes est retenue.
+1. Lire le code de l'intégration TCL (Lyon) et du template JS.
+2. Créer un compte développeur STM, vérifier le quota et le format réel d'i3. Le format actuel vient de code communautaire ⚠.
+3. Écrire un prototype de `gladys-stm` : un arrêt de bus et l'état des 4 lignes de métro, en mesurant la mémoire dans un conteneur limité à 256 Mo.
+4. Ouvrir un sujet sur le forum Gladys pour annoncer le projet.
+5. Avant l'option générique, contacter Transitous et vérifier les conditions de Chrono et d'OC Transpo.
 
-## Points non confirmés
+## Points non vérifiés (⚠)
 
-- Conditions actuelles de navitia.io.
-- Date officielle de fermeture de l'API RATP.
-- Correspondance exacte des identifiants d'arrêt PRIM : elle est rapportée par la communauté, pas par la documentation officielle.
-- Acceptation par Transitous d'un grand nombre d'instances Gladys qui interrogent le service.
-- Les chiffres de PRIM viennent d'extraits de recherche : le site bloque les robots (Cloudflare).
+- Quotas et conditions de Chrono (exo, RTL) et d'OC Transpo ; couverture de l'O-Train.
+- Format exact d'i3 v2 de la STM.
+- Disponibilité en direct des flux STS et GRT (serveurs injoignables depuis une adresse IP hors Canada).
+- Absence réelle de temps réel à la RTC ; statut officiel du flux d'alertes du REM.
+- Licences de Saguenay, BIXI, àVélo, Brampton, Edmonton, Saskatoon et Mobi.
+- Position de VIA Rail sur la réutilisation de son JSON `tsimobile`.
 
 ## Sources principales
 
-- Intégrations externes Gladys : <https://gladysassistant.com/docs/dev/external-integrations/>
-- Spec des intégrations externes : <https://github.com/GladysAssistant/Gladys/tree/master/docs/specs/external-integrations>
-- Intégration TCL : <https://github.com/prohand/gladys-transport-commun-lyonnais> (forum : <https://community.gladysassistant.com/t/integration-externe-transport-en-commun-lyonnais-tcl/10777>)
-- PRIM IDFM : <https://prim.iledefrance-mobilites.fr/fr/apis/idfm-ivtr-requete_unitaire>
-- Licence Mobilités : <https://prim.iledefrance-mobilites.fr/en/actualites/article/licence-mobilite>
-- API SNCF : <https://numerique.sncf.com/startup/api/>
-- SNCF sur le PAN : <https://transport.data.gouv.fr/datasets/horaires-sncf>
-- Catalogue du PAN : <https://transport.data.gouv.fr/api/datasets> (doc : <https://transport.data.gouv.fr/swaggerui>)
-- Transitous : <https://transitous.org/api/>
-- Lib GTFS-RT : <https://www.npmjs.com/package/gtfs-realtime-bindings>
-- Scènes HTTP Gladys : <https://gladysassistant.com/docs/scenes/http-request/>
-- MQTT Gladys : <https://gladysassistant.com/docs/api/mqtt-api/>
+- Gladys, intégrations externes : <https://gladysassistant.com/docs/dev/external-integrations/>. Spec : <https://github.com/GladysAssistant/Gladys/tree/master/docs/specs/external-integrations>
+- Intégration de référence (Lyon) : <https://github.com/prohand/gladys-transport-commun-lyonnais>
+- STM développeurs : <https://www.stm.info/fr/a-propos/developpeurs>. Conditions : <https://www.stm.info/fr/a-propos/developpeurs/condition-dutilisation>
+- exo, données ouvertes : <https://exo.quebec/fr/a-propos/donnees-ouvertes>. Chrono : <https://portail-developpeur.chrono-saeiv.com/>
+- RTC : <https://www.rtcquebec.ca/donnees-ouvertes>. STO : <https://sto.ca/en/business/developer-space-open-data/terms-of-use-stos-open-data-and-api-key/>. STL : <https://stlaval.ca/affaires/donnees-ouvertes>
+- Données Québec : <https://www.donneesquebec.ca/>. Mobility Database : <https://files.mobilitydatabase.org/feeds_v2.csv>
+- TTC GTFS-RT : <https://gtfsrt.ttc.ca/>. Metrolinx : <https://api.openmetrolinx.com/OpenDataAPI/>. OC Transpo : <https://nextrip-public-api.developer.azure-api.net/>
+- TransLink : <https://www.translink.ca/about-us/doing-business-with-translink/app-developer-resources>. Winnipeg : <https://api.winnipegtransit.com/>
+- VIA Rail : <https://www.viarail.ca/en/developer-resources>
+- Transitous : <https://transitous.org/api/>. Configuration Canada : <https://github.com/public-transport/transitous/tree/main/feeds>
+
+## Annexe : rappel pour la France (première version de l'étude)
+
+- Île-de-France (PRIM) : clé par utilisateur, environ 1 000 appels/jour.
+- SNCF : jeton personnel, 5 000/jour, ou flux GTFS-RT ouverts sur transport.data.gouv.fr.
+- Ailleurs : 219 jeux GTFS-RT recensés sur transport.data.gouv.fr.
+- Lyon est déjà couvert par l'intégration TCL. Le détail est dans l'historique git de ce fichier (premier commit).
