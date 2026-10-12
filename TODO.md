@@ -8,10 +8,10 @@
       only, the name "MétéoMédia" is kept with "unofficial connector,
       personal use" in the catalog description, the configuration intro, the
       cover and the docs. The Pelmorex terms of use forbid robots, scraping,
-      caching and software built on their content without written consent:
-      **do not add the `gladys-assistant-integration` topic** (it publishes
-      to the public store) unless Pelmorex agrees, or ECCC becomes the
-      primary source.
+      caching and software built on their content without written consent.
+      Updated 2026-10-12: the maintainer keeps the
+      `gladys-assistant-integration` topic, so the connector stays public
+      in the store, still labelled unofficial and for personal use.
 - [x] **ECCC alert endpoint** — `api.weather.gc.ca/collections/weather-alerts`
       (verified 2026-10-10: polygons, `risk_colour_en`, `alert_type`,
       `status_en`).
