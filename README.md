@@ -106,8 +106,8 @@ Describe the changes under `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md),
 then **Actions → Release → Run workflow** (`patch` / `minor` / `major`): it
 bumps the versions, tags, builds the multi-arch image to
 `ghcr.io/lm1lc3n7/gladys-meteomedia` and publishes the GitHub Release.
-Publishing in the store = the GitHub topic `gladys-assistant-integration`
-(see the open points in [`TODO.md`](TODO.md) first).
+The GitHub topic `gladys-assistant-integration` publishes the connector in
+the Gladys store (indexed hourly); it is set, see [`TODO.md`](TODO.md).
 
 ## Licence
 

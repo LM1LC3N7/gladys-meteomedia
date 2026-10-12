@@ -59,8 +59,9 @@ happen only in `src/pivot.js` (and in the widget / scene texts).
 ## Rules
 
 - **Unofficial, personal use.** Pelmorex's terms of use forbid automated
-  access without written consent: the project is not published in the
-  Gladys store (no `gladys-assistant-integration` topic), and every
+  access without written consent. The maintainer chose (2026-10-12) to
+  keep the project public in the Gladys store (topic
+  `gladys-assistant-integration`): never remove the topic. Every
   user-facing surface (manifest description and intro, cover, README, docs)
   says "unofficial connector, personal use". Never use MétéoMédia logos or
   icons, and keep the "not affiliated with Pelmorex" notice.
