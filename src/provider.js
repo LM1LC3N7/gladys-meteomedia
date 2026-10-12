@@ -187,7 +187,10 @@ export class WeatherProvider {
     }
     return this.share(`alerts:${key}`, async () => {
       try {
-        const alerts = await fetchAlerts(latitude, longitude, { timeout: HTTP_TIMEOUT });
+        const alerts = await fetchAlerts(latitude, longitude, {
+          timeout: HTTP_TIMEOUT,
+          now: this.now(),
+        });
         this.alerts.set(key, { alerts, fetchedAt: this.now() });
         return alerts;
       } catch (err) {

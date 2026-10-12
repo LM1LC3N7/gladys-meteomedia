@@ -106,11 +106,11 @@ export function parseAlerts(body, latitude, longitude, now = Date.now()) {
   return [...alerts.values()];
 }
 
-export async function fetchAlerts(latitude, longitude, { timeout } = {}) {
+export async function fetchAlerts(latitude, longitude, { timeout, now = Date.now() } = {}) {
   const r = SEARCH_RADIUS;
   const bbox = [longitude - r, latitude - r, longitude + r, latitude + r]
     .map((v) => v.toFixed(4))
     .join(',');
   const body = await fetchJson(`${COLLECTION_URL}?f=json&limit=100&bbox=${bbox}`, { timeout });
-  return parseAlerts(body, latitude, longitude);
+  return parseAlerts(body, latitude, longitude, now);
 }
