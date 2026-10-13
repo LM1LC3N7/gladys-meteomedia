@@ -82,6 +82,51 @@ première maison localisée.
 | Dangereux                | humidex de 46 à 53                                         |
 | Coup de chaleur imminent | humidex de 54 ou plus                                      |
 
+## Le widget « Alertes météo »
+
+Pour une maison :
+
+- deux tuiles, le **niveau actuel** et le **niveau à venir** (les quatre
+  sévérités CAP : 1 mineure, 2 modérée, 3 sévère, 4 extrême ; une alerte
+  jaune est modérée, orange sévère, rouge extrême) ;
+- les alertes en cours, puis celles annoncées et les veilles, de la plus
+  sévère à la moins sévère, chacune avec sa **période** en heure locale, un
+  **badge de niveau** et le **texte officiel** dans le panneau de détail.
+
+Réglage **Maison** : le nom de la maison à afficher. Vide, c’est la première
+maison localisée.
+
+## Scènes : alertes
+
+Deux déclencheurs, vérifiés toutes les 5 minutes :
+
+- **Alerte météo émise** — Environnement Canada a émis une alerte pour une
+  maison, relevé son niveau, ou transformé une veille en avertissement.
+  Filtres : **maison**, **niveaux** (cochez 3 et 4 pour les seules alertes
+  orange et rouges), **types** (vent, pluie, inondation, orages, neige et
+  pluie verglaçante, chaleur, froid, avalanche, côtier, brouillard, autre).
+  Variables : `title`, `type`, `level` (1 à 4), `level_name`, `alert_type`
+  (warning, watch, advisory, statement), `start`, `end` (en heure locale,
+  « demain 06:00 »), `in_force`, `description`, `summary`, `house`.
+- **Alerte météo levée** — plus aucune alerte d’un type pour une maison :
+  son heure de fin est passée et Environnement Canada ne l’a pas prolongée.
+  Filtres : maison, types.
+
+Les alertes sont comparées par type et niveau : une mise à jour au même
+niveau ne déclenche rien. Ce qui a été annoncé est conservé dans les
+données de l’intégration : un redémarrage ne redéclenche rien, et une
+alerte émise entre-temps se déclenche une fois.
+
+Une action de scène, **Alertes météo en cours** : un résumé des alertes en
+cours et annoncées, prêt à envoyer dans un message (`{{summary}}`), avec
+`count`, `current_level` et `upcoming_level` pour une condition suivante.
+Champ **maison** : un nom de maison, vide pour toutes.
+
+Exemples : une alerte orange ou rouge → envoyer
+« {{triggerEvent.data.title}}, {{triggerEvent.data.start}} –
+{{triggerEvent.data.end}} » et fermer les volets ; chaque matin à 7 h, le
+résumé du jour sur Telegram quand il y en a un.
+
 ## Scènes : « Niveau de ressenti changé »
 
 Ce déclencheur lance une scène quand le niveau de ressenti d'une maison

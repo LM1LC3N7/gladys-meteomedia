@@ -175,6 +175,11 @@ export class WeatherProvider {
     return snapshot;
   }
 
+  /** The cached alerts of a location, without fetching (undefined when none). */
+  cachedAlerts(latitude, longitude) {
+    return this.alerts.get(locationKey(latitude, longitude))?.alerts;
+  }
+
   /** Official ECCC alerts at a location (empty when disabled or abroad). */
   async getAlerts(latitude, longitude, { force = false } = {}) {
     if (!this.getConfig().eccc_alerts || !isInCanadaArea(latitude, longitude)) {
@@ -191,7 +196,9 @@ export class WeatherProvider {
           timeout: HTTP_TIMEOUT,
           now: this.now(),
         });
-        this.alerts.set(key, { alerts, fetchedAt: this.now() });
+        const fetchedAt = this.now();
+        alerts.fetchedAt = fetchedAt;
+        this.alerts.set(key, { alerts, fetchedAt });
         return alerts;
       } catch (err) {
         this.logger.warn(`ECCC alerts failed: ${err.message}`);

@@ -11,12 +11,12 @@
 // every scene again); leaving a level needs a 1-unit margin (hysteresis).
 // -----------------------------------------------------------------------------
 
-import { FEELS_LIKE_TRIGGER } from './constants.js';
+import { ALERT_ENDED_TRIGGER, ALERT_ISSUED_TRIGGER, FEELS_LIKE_TRIGGER } from './constants.js';
 import { INDEX_KINDS, crossedLevels, getLevel, levelWithHysteresis } from './feelsLike.js';
 import { describeIndex } from './i18n.js';
 import { converters, textLanguage, UNITS } from './pivot.js';
 
-export const SCENE_TRIGGER_KEYS = [FEELS_LIKE_TRIGGER];
+export const SCENE_TRIGGER_KEYS = [FEELS_LIKE_TRIGGER, ALERT_ISSUED_TRIGGER, ALERT_ENDED_TRIGGER];
 
 export class FeelsLikeTracker {
   constructor() {

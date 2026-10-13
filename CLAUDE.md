@@ -43,9 +43,14 @@ src/assessment.js           index/level of a snapshot, synthetic alerts
 src/indicators.js           muggy night, black ice, pressure trend (pure)
 src/sun.js                  sunrise/sunset, day/night (pure)
 src/conditions.js           icon codes -> pivot conditions
-src/watcher.js              5-min loop: alerts nudge, scene events, widget nudge
+src/watcher.js              5-min loop: alerts nudge, scene events, widget nudges;
+                            minute clock for the alerts widget
 src/sceneTriggers.js        feels-like level tracker (baseline, hysteresis)
-src/widgets.js              "feels_like" widget content
+src/alertTracker.js         alert issued / ended tracker (memory in /data, compared by
+                            kind and level, "ended" confirmed by ECCC)
+src/scenes.js               "get_alerts" scene action (summary ready to send)
+src/store.js                JSON files in /data (METEOMEDIA_DATA_DIR locally), memory store for tests
+src/widgets.js              "alerts" and "feels_like" widget contents
 src/actions.js              "test_sources" button
 src/i18n.js                 runtime texts (fr/en)
 test/fixtures/              recorded API answers (2026-10-10)
@@ -73,7 +78,13 @@ happen only in `src/pivot.js` (and in the widget / scene texts).
   `src/constants.js` (5 s primary, 4 s fallback) and the cache.
 - **The Pelmorex API is undocumented**: parse defensively (`num()`, optional
   chaining), never trust a field to exist. Always query by coordinates.
-- **Read-only rootfs**: write nothing outside `/data` (we write nothing).
+- **Read-only rootfs**: write nothing outside `/data`: `alerts.json` (the
+  memory of the alert triggers) through `src/store.js`. House coordinates
+  are personal data: never logged nor written.
+- **Scene filters compare values only** (equality and membership): the alert
+  level is a `multi_select` of 1 to 4, the event sends it as a number (the
+  core converts it to compare with the options). The triggers compare the
+  alerts by kind and level, never by id.
 - **Versions belong to the Release workflow** (Actions → Release). Never edit
   `version` in `package.json` or in the manifest, nor the `docker_image` tag.
 - **Changelog**: every user-visible change adds a line under
