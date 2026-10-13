@@ -57,3 +57,10 @@ export const MAX_ALERT_DESCRIPTION_LENGTH = 5000;
 export const RADAR_IMAGE_KEY = 'radar';
 export const FEELS_LIKE_WIDGET = 'feels_like';
 export const FEELS_LIKE_TRIGGER = 'feels_like_level_changed';
+export const ALERT_ISSUED_TRIGGER = 'alert_issued';
+export const ALERT_ENDED_TRIGGER = 'alert_ended';
+export const GET_ALERTS_ACTION = 'get_alerts';
+export const ALERTS_WIDGET = 'alerts';
+// The alerts widget tiles "now" and "later" move when an alert starts:
+// re-read the cached alerts every minute, without network.
+export const CLOCK_INTERVAL = 60 * 1000;

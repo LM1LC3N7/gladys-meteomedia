@@ -27,6 +27,9 @@ lives: humidex in summer, wind chill in winter.
 | P1       | `apparent_temperature` = MétéoMédia feels-like                                               | `src/sources/pelmorex.js`                     |
 | P1       | ECCC city page fallback (+ UV index enrichment)                                              | `src/sources/ecccCitypage.js`                 |
 | P2       | Official ECCC alerts (CAP severities and types) + `requestWeatherRefresh()` when they change | `src/sources/ecccAlerts.js`, `src/watcher.js` |
+| P2       | Scene triggers "alert issued" / "alert ended" (house, levels 1–4, types), memory in `/data`  | `src/alertTracker.js`, `src/store.js`         |
+| P2       | Scene action "current weather alerts": summary ready to send, levels now and later           | `src/scenes.js`                               |
+| P2       | "Weather alerts" widget: levels now and later, period, badge, official text, minute clock    | `src/widgets.js`                              |
 | P2       | "Feels like" widget: humidex / wind chill, risk level, worst hour, time to frostbite         | `src/widgets.js`, `src/feelsLike.js`          |
 | P2       | Scene trigger "feels-like level changed" (discrete levels, one event per crossed level)      | `src/sceneTriggers.js`                        |
 | P3       | ECCC precipitation radar over an NRCan base map (provider image `radar`)                     | `src/sources/ecccRadar.js`                    |
@@ -46,7 +49,9 @@ onWeatherGet(lat, lon, language, units)
        └─ toPivot (metric snapshot -> requested units and language)
 
 Watcher, every 5 min, per located house (getHouses, manifest location: true)
-  ├─ alerts changed           -> requestWeatherRefresh()
+  ├─ alerts changed           -> requestWeatherRefresh(), requestWidgetRefresh('alerts')
+  ├─ alert kind new / raised  -> publishSceneEvent('alert_issued'), memory in /data
+  ├─ alert kind gone (confirmed) -> publishSceneEvent('alert_ended')
   ├─ feels-like level crossed -> publishSceneEvent('feels_like_level_changed')
   └─ new data                 -> requestWidgetRefresh('feels_like')
 ```

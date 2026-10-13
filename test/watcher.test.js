@@ -154,3 +154,56 @@ test('the watcher publishes the scene events, and survives a refusal', async () 
   assert.ok(gladys.sceneEvents.length > 0);
   assert.equal(gladys.sceneEvents.at(-1).data.current_level, 'cold_extreme');
 });
+
+test('alert events: baseline, then issued and ended, kept in the store', async () => {
+  const { createMemoryStore } = await import('../src/store.js');
+  const store = createMemoryStore();
+  let alerts = { type: 'FeatureCollection', features: [] };
+  fake = installFetch([[/weather-alerts/, () => json(alerts)], ...montrealRoutes()]);
+  const clock = { now: FIXTURE_NOW };
+  const gladys = createFakeGladys({ houses: [QUEBEC_HOUSE] });
+  const provider = new WeatherProvider({ now: () => clock.now, logger: silent });
+  const watcher = new Watcher({
+    gladys,
+    provider,
+    getPreferences: () => ({ language: 'fr', units: 'metric' }),
+    store,
+    logger: silent,
+    now: () => clock.now,
+  });
+  await watcher.tick();
+  assert.deepEqual(gladys.sceneEvents, []);
+  assert.deepEqual(JSON.parse(store.files.get('alerts.json')).areas, { chalet: { kinds: {} } });
+  // The frost advisory appears.
+  alerts = fixture('eccc-alerts.json');
+  clock.now += 5 * 60_000;
+  await watcher.tick();
+  assert.deepEqual(
+    gladys.sceneEvents.map((e) => [e.key, e.data.type, e.data.level, e.data.house]),
+    [['alert_issued', 'cold', 2, 'Chalet']],
+  );
+  assert.equal(gladys.sceneEvents[0].data.title, 'Avis de gel (niveau 2)');
+  assert.equal(JSON.parse(store.files.get('alerts.json')).areas.chalet.kinds.cold.level, 2);
+  assert.ok(gladys.widgetRefreshes.includes('alerts'));
+  // Gone after its end time, read after it: ended.
+  alerts = { type: 'FeatureCollection', features: [] };
+  clock.now = Date.parse('2026-10-11T15:00:00Z');
+  await watcher.tick();
+  assert.equal(gladys.sceneEvents.at(-1).key, 'alert_ended');
+  assert.deepEqual(JSON.parse(store.files.get('alerts.json')).areas.chalet.kinds, {});
+  // The scene action summary and the houses it names.
+  const { createSceneActions } = await import('../src/scenes.js');
+  const actions = createSceneActions({
+    watcher,
+    provider,
+    getPreferences: () => ({ language: 'en' }),
+    now: () => clock.now,
+  });
+  const result = await actions.get_alerts({ house: 'Chalet' });
+  assert.equal(result.count, 0);
+  assert.match(result.summary, /Chalet: no weather alert/);
+  assert.equal(
+    (await actions.get_alerts({ house: 'Nowhere' })).summary.startsWith('No located'),
+    true,
+  );
+});

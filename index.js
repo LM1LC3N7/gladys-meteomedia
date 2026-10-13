@@ -18,6 +18,8 @@ import { WeatherProvider } from './src/provider.js';
 import { Watcher } from './src/watcher.js';
 import { createWidgets } from './src/widgets.js';
 import { createActions } from './src/actions.js';
+import { createSceneActions } from './src/scenes.js';
+import { createStore } from './src/store.js';
 import { UNITS } from './src/pivot.js';
 
 const gladys = new GladysIntegration();
@@ -56,7 +58,12 @@ function reportStatus({ ok, source }) {
 }
 
 const provider = new WeatherProvider({ getConfig: () => config, onStatus: reportStatus });
-const watcher = new Watcher({ gladys, provider, getPreferences: () => preferences });
+const watcher = new Watcher({
+  gladys,
+  provider,
+  getPreferences: () => preferences,
+  store: createStore(),
+});
 
 // --- Weather (manifest type "weather", contract B.18) -----------------------
 // Answered under 15 s; the cache (10 min) keeps it far below in practice.
@@ -76,6 +83,13 @@ for (const [key, widget] of Object.entries(
   createWidgets({ provider, watcher, rememberPreferences }),
 )) {
   gladys.onWidgetGet(key, (request) => widget.get(request));
+}
+
+// --- Scene actions -----------------------------------------------------------
+for (const [key, handler] of Object.entries(
+  createSceneActions({ watcher, provider, getPreferences: () => preferences }),
+)) {
+  gladys.onSceneAction(key, (fields) => handler(fields));
 }
 
 // --- Configuration screen buttons --------------------------------------------
