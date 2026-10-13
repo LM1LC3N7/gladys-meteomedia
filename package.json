@@ -1,6 +1,6 @@
 {
   "name": "gladys-meteomedia",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "description": "MétéoMédia (Pelmorex) weather provider for Gladys Assistant, with Environment Canada alerts, fallback and radar.",
   "type": "module",

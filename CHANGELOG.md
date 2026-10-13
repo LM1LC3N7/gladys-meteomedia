@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-13
+
 ### Added
 
 - Scene triggers "weather alert issued" and "weather alert ended", filterable
@@ -53,6 +55,7 @@ the notes of the version's GitHub Release.
 - Optional synthetic feels-like alerts (off by default).
 - "Test the weather sources" button in the Configuration screen.
 
-[Unreleased]: https://github.com/LM1LC3N7/gladys-meteomedia/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/LM1LC3N7/gladys-meteomedia/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/LM1LC3N7/gladys-meteomedia/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/LM1LC3N7/gladys-meteomedia/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/LM1LC3N7/gladys-meteomedia/releases/tag/v0.1.1
