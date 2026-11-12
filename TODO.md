@@ -28,7 +28,7 @@
 - [ ] Check the CI (Docker build, Node 22 and 24).
 - [ ] Turn on "Private vulnerability reporting" (SECURITY.md points there).
 - [ ] Run the store validator once the image is published.
-- [ ] Test on a real Gladys 5.1+: widget rendering, scene trigger in the
+- [ ] Test on a real Gladys 5.3+: widget rendering, scene trigger in the
       editor, radar in the weather widget, alert nudges.
 
 ## Ideas
