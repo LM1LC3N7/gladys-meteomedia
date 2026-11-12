@@ -17,7 +17,7 @@ Canada alerts, precipitation radar.
 
 ## Installation
 
-1. Install the integration from the Gladys catalog (Gladys 5.1 or later).
+1. Install the integration from the Gladys catalog (Gladys 5.3 or later).
 2. Accept the access to the **location of your houses**: the weather is the
    one of the house, nothing else to enter.
 3. Make sure your house is on the map (**Settings → Houses**). No location,
